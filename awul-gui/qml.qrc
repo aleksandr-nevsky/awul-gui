@@ -4,5 +4,8 @@
         <file>qtquickcontrols2.conf</file>
         <file>MainWindow.qml</file>
         <file>MainWindowForm.ui.qml</file>
+        <file>icons/outline_alarm_on_black_18.png</file>
+        <file>icons/outline_light_mode_black_18.png</file>
+        <file>icons/outline_power_off_black_18.png</file>
     </qresource>
 </RCC>
