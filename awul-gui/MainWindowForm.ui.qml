@@ -4,7 +4,9 @@ import QtQuick.Controls 2.15
 Item {
     id: item1
     width: 400
-    height: 400
+    height: 600
+    property alias logArea: logArea
+    property alias flickable: flickable
     property alias image1Width: image1.width
     property alias imageHeight: image.height
     property alias buttonOff: buttonOff
@@ -38,7 +40,7 @@ Item {
             width: 100
             height: 50
             text: qsTr("Off")
-//            icon.source: "qrc:/icons/outline_power_off_black_18.png"
+            //            icon.source: "qrc:/icons/outline_power_off_black_18.png"
             anchors.top: switchWakeupToggle.bottom
             display: AbstractButton.IconOnly
             anchors.topMargin: 40
@@ -82,6 +84,23 @@ Item {
             source: "icons/outline_light_mode_black_18.png"
             anchors.leftMargin: 20
             fillMode: Image.PreserveAspectFit
+        }
+
+        Flickable {
+            id: flickable
+            y: 292
+            height: 150
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            TextArea.flickable: TextArea {
+                id: logArea
+                verticalAlignment: Text.AlignBottom
+                wrapMode: TextArea.Wrap
+            }
+
+            ScrollBar.vertical: ScrollBar {}
         }
     }
 }

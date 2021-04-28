@@ -9,19 +9,20 @@ MainWindowForm {
     }
 
     function init() {
-        console.log("MainWindow Component.onCompleted");
+        writeLog("MainWindow Component.onCompleted");
 
         var requestWakeupToggle = new XMLHttpRequest();
         var requestGetValue = new XMLHttpRequest();
-        requestGetValue.open('GET', 'http://awul-host:8080/awul/pwm/getValue');
+        requestGetValue.open('GET', 'http://awul-host.lu.nevsky.cc:8080/awul/pwm/getValue');
         requestGetValue.onreadystatechange = function handleGetValueRequest() {
 
             if (requestGetValue.readyState === XMLHttpRequest.DONE) {
                 if (requestGetValue.status === 200) {
-                    console.log("getValue value = " + requestGetValue.responseText);
+                    writeLog("getValue value = " + requestGetValue.responseText);
                     sliderPwm.value = requestGetValue.responseText;
                 } else {
-                    console.log("getValue request failed", requestGetValue.status)
+                    //                    console.log("getValue request failed", requestGetValue.status)
+                    writeLog("getValue request failed " + requestGetValue.status)
                 }
             }
         }
@@ -33,42 +34,62 @@ MainWindowForm {
 
             if (requestWakeupToggle.readyState === XMLHttpRequest.DONE) {
                 if (requestWakeupToggle.status === 200) {
-                    console.log("wakeupToggle value = " + requestWakeupToggle.responseText);
+                    writeLog("wakeupToggle value = " + requestWakeupToggle.responseText);
                     if(requestWakeupToggle.responseText === "true") {
                         switchWakeupToggle.checked = true;
                     } else {
                         switchWakeupToggle.checked = false;
                     }
 
-
                 } else {
-                    console.log("wakeupToggle request failed", requestWakeupToggle.status)
+                    //                    console.log("wakeupToggle request failed", requestWakeupToggle.status)
+                    writeLog("wakeupToggle request failed " + requestGetValue.status)
                 }
             }
         }
         requestWakeupToggle.send();
 
-        console.log("MainWindow Component.onCompleted END");
+        writeLog("MainWindow Component.onCompleted END");
 
     }
 
     sliderPwm.onValueChanged: {
         var request = new XMLHttpRequest();
         request.open('GET', 'http://awul-host.lu.nevsky.cc:8080/awul/pwm/' + sliderPwm.value);
+        request.onreadystatechange = function handleGetValueRequest() {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                writeLog("sliderPwm.onValueChanged " + request.status)
+            }
+        }
         request.send();
     }
 
     switchWakeupToggle.onClicked: {
         var request = new XMLHttpRequest();
         request.open('GET', 'http://awul-host.lu.nevsky.cc:8080/awul/wakeupToggle/' + switchWakeupToggle.checked);
+        request.onreadystatechange = function handleGetValueRequest() {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                writeLog("switchWakeupToggle.onClicked " + request.status)
+            }
+        }
         request.send();
     }
 
     buttonOff.onClicked: {
         var request = new XMLHttpRequest();
         request.open('GET', 'http://awul-host.lu.nevsky.cc:8080/awul/lightOff');
+        request.onreadystatechange = function handleGetValueRequest() {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                writeLog("buttonOff.onClicked " + request.status)
+            }
+        }
         request.send();
         sliderPwm.value = 0;
+    }
+
+    function writeLog(message) {
+        console.log(message);
+        logArea.append(message);
     }
 
 }
