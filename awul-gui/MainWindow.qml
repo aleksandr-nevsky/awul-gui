@@ -13,6 +13,9 @@ MainWindowForm {
 
         var requestWakeupToggle = new XMLHttpRequest();
         var requestGetValue = new XMLHttpRequest();
+
+        refrestTemp();
+
         requestGetValue.open('GET', 'http://awul-host.lu.nevsky.cc:8080/awul/pwm/getValue');
         requestGetValue.onreadystatechange = function handleGetValueRequest() {
 
@@ -48,6 +51,8 @@ MainWindowForm {
             }
         }
         requestWakeupToggle.send();
+//        logArea.visible = false;
+        flickable.visible = false;
 
         writeLog("MainWindow Component.onCompleted END");
 
@@ -87,9 +92,32 @@ MainWindowForm {
         sliderPwm.value = 0;
     }
 
+    temperature.onClicked: {
+        refrestTemp();
+    }
+
+    function refrestTemp() {
+        var requestGetTemperature = new XMLHttpRequest();
+
+        requestGetTemperature.open('GET', 'http://awul-host.lu.nevsky.cc:8080/temperature/ds18b20')
+        requestGetTemperature.onreadystatechange = function handleGetValueRequest() {
+
+            if (requestGetTemperature.readyState === XMLHttpRequest.DONE) {
+                if (requestGetTemperature.status === 200) {
+                    writeLog("temperature = " + requestGetTemperature.responseText);
+                    temperature.text = requestGetTemperature.responseText + " °C";
+                } else {
+                    writeLog("temperature request failed " + requestGetTemperature.status)
+                }
+            }
+        }
+        requestGetTemperature.send();
+    }
+
     function writeLog(message) {
         console.log(message);
         logArea.append(message);
+        logArea.visible
     }
 
 }

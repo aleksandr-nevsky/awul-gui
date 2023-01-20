@@ -5,6 +5,7 @@ Item {
     id: item1
     width: 400
     height: 600
+    property alias temperature: temperature
     property alias logArea: logArea
     property alias flickable: flickable
     property alias image1Width: image1.width
@@ -101,6 +102,18 @@ Item {
             }
 
             ScrollBar.vertical: ScrollBar {}
+        }
+
+        Button {
+            id: temperature
+            width: 150
+            height: 100
+            anchors.verticalCenter: sliderPwm.verticalCenter
+            anchors.verticalCenterOffset: 288
+            anchors.horizontalCenterOffset: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("")
+            font.pointSize: 24
         }
     }
 }
